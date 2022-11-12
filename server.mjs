@@ -1,11 +1,15 @@
-import { createServer } from "http";
+import express from "express";
 import fetch from "node-fetch";
 import FormData from "form-data";
-
-createServer(async (req, res) => {
+const app = express();
+app.all("/", async (req, res) => {
+	res.send("halo guys");
+});
+app.all("/index", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
 	res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
 	let formData = new FormData();
 	formData.append(
 		"key",
@@ -22,6 +26,6 @@ createServer(async (req, res) => {
 	const data = await response.json();
 
 	console.log(data);
-	res.write(JSON.stringify(data));
-	res.end();
-}).listen(process.env.PORT || 3000);
+	res.send(data);
+});
+app.listen(process.env.PORT || 8000);
