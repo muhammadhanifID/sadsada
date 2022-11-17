@@ -1,6 +1,6 @@
 import express from "express";
 import fetch from "node-fetch";
-import FormData from "form-data";
+import { FormData } from "formdata-node";
 const app = express();
 app.all("/", async (req, res) => {
 	res.send("halo guys");
@@ -11,8 +11,8 @@ app.all("/ceksaldo", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
 	let formData = new FormData();
-	formData.append("key", process.env.KEYREETEN);
-	formData.append("sign", process.env.SIGNREETEN);
+	formData.set("key", process.env.KEYREETEN);
+	formData.set("sign", process.env.SIGNREETEN);
 
 	// note: use npm install node-fetch@2.0 to be able to use "require"
 
@@ -31,11 +31,11 @@ app.all("/listgame", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
 	let formData = new FormData();
-	formData.append("key", process.env.KEYREETEN);
-	formData.append("sign", process.env.SIGNREETEN);
-	formData.append("type", "service");
-	formData.append("filter_type", "game");
-	formData.append("filter_value", "Mobile Legends");
+	formData.set("key", process.env.KEYREETEN);
+	formData.set("sign", process.env.SIGNREETEN);
+	formData.set("type", "service");
+	formData.set("filter_type", "game");
+	formData.set("filter_value", "Mobile Legends");
 
 	// note: use npm install node-fetch@2.0 to be able to use "require"
 
@@ -44,6 +44,7 @@ app.all("/listgame", async (req, res) => {
 		body: formData,
 	});
 	const items = await response.json();
+
 	let key = "status";
 	let value = "available";
 	const result = items.data.filter((status) => status[key] === value);
